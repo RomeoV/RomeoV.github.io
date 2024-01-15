@@ -1,0 +1,68 @@
+\documentclass[tikz, convert={density=600,outext=.png}]{standalone}
+\usetikzlibrary{positioning}
+\usetikzlibrary{tikzmark}
+\usetikzlibrary{calc}
+\usepackage{amsmath}
+
+\begin{document}
+\begin{tikzpicture}[remember picture]
+
+  \node (image) {image};
+  \node[right=of image] (y) {\(y\)}; \draw[->] (image) to node[above, scale=0.7] {ViT} (y);
+  \node[below=of y] (D-X) {\(D, X\)}; \draw[->] (y) to node[right, scale=0.7] {k-SVD} (D-X);
+  \node[right=0.1 of D-X] (eq-1) {\(=\)};
+  \node[right=0.1 of eq-1] (sparse-assignments) {
+    \(\begin{bmatrix}
+    \phantom{\times} & \times & \phantom{\times} & \times & \times
+    \end{bmatrix}\)};
+  \node[below=of sparse-assignments] (tokens) {
+    \(\begin{bmatrix}
+      |\tikzmark{bar-} & | & | & | & | \\
+      t_1 & t_2 & t_3 & t_4 & t_5 \\
+      | & | & | & | & |
+    \end{bmatrix}\)};
+
+  \node[below=of tokens] (mask-tokens) {
+    \(\begin{bmatrix}
+      | & | & | & | & | & | \\
+      e_1 & [M] & e_2 & [M] & e_3 & [M]\\
+      | & | & | & | & | & |
+    \end{bmatrix}\)};
+
+  \draw[->, green!75!black] ($(sparse-assignments.south)!0.35!(sparse-assignments.south west)$) to node[right, black, scale=0.7] {select} ($(tokens.north)!0.35!(tokens.north west)$);
+  \draw[->, green!75!black] ($(tokens.south)!0.40!(tokens.south west)$) to node[right, black, scale=0.7] {replace} ($(mask-tokens.north)!0.45!(mask-tokens.north west)$);
+
+  \draw[->, green!75!black] ($(sparse-assignments.south)!0.35!(sparse-assignments.south east)$) to ($(tokens.north)!0.35!(tokens.north east)$);
+  \draw[->, green!75!black] ($(tokens.south)!0.35!(tokens.south east)$) to ($(mask-tokens.north)!0.15!(mask-tokens.north east)$);
+
+  \draw[->, green!75!black] ($(sparse-assignments.south)!0.75!(sparse-assignments.south east)$) to ($(tokens.north)!0.70!(tokens.north east)$);
+  \draw[->, green!75!black] ($(tokens.south)!0.75!(tokens.south east)$) to  ($(mask-tokens.north)!0.70!(mask-tokens.north east)$);
+
+  \node[below=of mask-tokens] (text-embed-2) {
+    \(\begin{bmatrix}
+| \\ | \\ | \\ |
+      \end{bmatrix} \)
+  };
+  \draw[->] (mask-tokens) to node[right, scale=0.7] {\(\mathrm{textenc}\)} (text-embed-2);
+
+  \node[left=0.1 of text-embed-2] (text-embed-1) {
+    \(\begin{bmatrix}
+| \\ | \\ | \\ |
+      \end{bmatrix} \)
+  };
+
+  \node[below=0.0 of image] (caption) {caption};
+  \draw[->] (caption) |- node[above, pos=0.9, scale=0.7] {\(\mathrm{textenc}\)} (text-embed-1);
+
+  \node[above left=1 and 0.1 of mask-tokens.west] (prompt) {prompt};
+  \draw[->] (prompt) |- node[below, scale=0.7, pos=0.7] {encode} (mask-tokens.west);
+
+  \coordinate[right=3 of text-embed-2] (corner);
+  \draw[->] (text-embed-2) to node[above, scale=0.7, pos=0.1] {MSE} (corner) |- node[right, scale=0.7, pos=0.3] {update}  (tokens);
+
+  \node[right=0.0 of sparse-assignments, scale=0.7] {\textit{sparse assignments}};
+  \node[left=0.0 of tokens, scale=0.7] {\textit{dictionary embeddings}};
+
+\end{tikzpicture}
+
+\end{document}
