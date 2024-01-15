@@ -1,0 +1,10 @@
+\documentclass[tikz, convert={density=600,outext=.png}]{standalone}
+\usetikzlibrary{cd}
+
+\begin{document}
+\begin{tikzcd}
+  {Image} \arrow[r, "\mathrm{ViT}" blue] \arrow[d, "\mathrm{caption}" {scale=0.8, left, red}] & Embedding \arrow[d, leftrightarrow, " \mathrm{(disentangling)} ;" {pos=0.35, scale=0.8, red}, "\mathrm{(token\ mapping)}" {red, pos=0.65, scale=0.8}] \\
+  Sentence \arrow[r, leftrightarrow, "\mathrm{LLM}" blue] &  {Word\ tokens}
+\end{tikzcd}
+
+\end{document}
