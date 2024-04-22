@@ -1,6 +1,7 @@
 # -*- org-export-with-section-numbers: t; org-latex-reference-command: "\\ref{%s}"; -*-
 #+title: Disentangling Concepts and Constructing Human-Compatible Explanations for Image Embeddings
 #+author: Romeo Valentin and others
+#+date: Spring 2024
 #+email: romeov@stanford.edu
 #+bibliography: /home/romeo/Zotero/zotero-bibliography.bib
 #+cite_export: csl
