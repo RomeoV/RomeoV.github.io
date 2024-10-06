@@ -1,6 +1,6 @@
 +++
 title = "Hi, I'm Romeo"
-draft = true
+draft = false
 +++
 
 Currently, I am working on certification protocols for machine learning systems in safety-critical domains; first in aerospace, but with future plans for medical, finance, and public policy. To progress with this task, I have been fortunate to join the Stanford Intelligent Systems Lab. If you’re around Stanford and are interested in talking to me, let’s have a coffee!
